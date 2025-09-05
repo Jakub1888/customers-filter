@@ -1,0 +1,30 @@
+<div [formGroup]="formGroup()">
+  <input
+    [attr.list]="'properties_' + index()"
+    formControlName="property"
+    name="property"
+    placeholder="Select an attribute"
+    class="select"
+  />
+  <datalist [id]="'properties_' + index()">
+    @for (property of properties(); let index = $index; track index) {
+      <option [value]="property.property">
+        {{ property.property }}
+      </option>
+    }
+  </datalist>
+
+  @if (property()?.value) {
+    <select name="operator" formControlName="operator" class="select">
+      @for (category of categories[selectedType()]; track category) {
+        <option [value]="category">{{ category }}</option>
+      }
+    </select>
+
+    <input formControlName="value" placeholder="value" name="value" class="input" />
+  }
+
+  <button (click)="onRemoveEventProperty()" class="btn-icon">
+    <img src="assets/svg/close.svg" alt="close" />
+  </button>
+</div>

@@ -1,0 +1,54 @@
+<div [formGroup]="formGroup()">
+  <div class="header">
+    <span>
+      {{ stepIndex() }}. Step:
+      <input
+        formControlName="name"
+        class="disabled"
+        placeholder="Name"
+        #nameInput
+        (blur)="onNameInputBlur()"
+      />
+      <button class="btn-icon" (click)="editName()">
+        <img src="assets/svg/edit.svg" alt="edit" />
+      </button>
+    </span>
+
+    <ng-content select=".header-actions"></ng-content>
+  </div>
+
+  <div class="event-selection">
+    <input
+      list="eventTypes"
+      class="select"
+      formControlName="eventType"
+      placeholder="Select an event"
+    />
+    <datalist id="eventTypes">
+      @for (event of events(); track event.type) {
+        <option [value]="event.type">{{ event.type }}</option>
+      }
+    </datalist>
+
+    <div formArrayName="eventProperties">
+      @for (formGroup of eventPropertiesArray().controls; let index = $index; track index) {
+        <div [formGroupName]="index">
+          <app-filter-input-group
+            [properties]="eventProperties()"
+            [formGroup]="formGroup"
+            [index]="stepIndex() + index"
+            (removeEventProperty)="onRemoveEventProperty(index)"
+          />
+        </div>
+      }
+
+      @if (addEventPropertyAvailable()) {
+        <button (click)="onAddEventProperty()" class="btn-secondary">
+          {{
+            eventPropertiesArray().controls.length === 0 ? '+Add an event attribute' : 'Refine more'
+          }}
+        </button>
+      }
+    </div>
+  </div>
+</div>

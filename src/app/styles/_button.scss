@@ -1,0 +1,37 @@
+@use './palette' as palette;
+
+@mixin button-styles() {
+  border: none;
+  font-family: Roboto, 'Open Sans', 'Helvetica Neue', sans-serif;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: palette.$highlight;
+  color: palette.$text-primary;
+  padding: 8px;
+  @include button-styles();
+}
+
+.btn-secondary {
+  background: transparent;
+  color: palette.$accent;
+  @include button-styles();
+}
+
+.btn-danger {
+  background: transparent;
+  color: #dc3545;
+  @include button-styles();
+}
+
+.btn-icon {
+  background: transparent;
+  @include button-styles();
+
+  & img {
+    width: 18px;
+    height: 18px;
+  }
+}

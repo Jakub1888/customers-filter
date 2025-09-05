@@ -1,0 +1,24 @@
+@use './palette' as palette;
+
+@mixin inputStyle($bg) {
+  border: 1px solid palette.$border;
+  color: palette.$text-primary;
+  padding: 6px;
+  background: $bg;
+  width: 120px;
+}
+
+.disabled {
+  border: none;
+  background-color: transparent;
+  width: 100px;
+  text-overflow: ellipsis;
+}
+
+.select {
+  @include inputStyle(palette.$primary);
+}
+
+.input {
+  @include inputStyle(palette.$secondary);
+}

@@ -1,0 +1,9 @@
+@use './palette' as palette;
+
+.divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: palette.$border;
+  margin: 0.5rem 0;
+}

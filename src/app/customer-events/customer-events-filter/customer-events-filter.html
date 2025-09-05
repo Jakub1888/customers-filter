@@ -1,0 +1,39 @@
+<header>
+  <h4>Customer filter</h4>
+
+  <button class="btn-danger" (click)="store.discardFilters()">Discard filters</button>
+</header>
+
+<form [formGroup]="store.filterStepForm()">
+  @let filterStepFormGroups = store.filterStepForm().controls.filterSteps.controls;
+
+  <div formArrayName="filterSteps" class="filter-steps">
+    @for (formGroup of filterStepFormGroups; let index = $index; track index) {
+      <app-customer-events-filter-step
+        [formGroup]="formGroup"
+        [events]="store.events()"
+        [stepIndex]="index"
+        (addEventProperty)="store.addEventProperty($event)"
+        (removeEventProperty)="store.removeEventProperty($event.formGroup, $event.index)"
+      >
+        <span class="header-actions">
+          @if (filterStepFormGroups.length > 1) {
+            <button class="btn-icon" (click)="store.removeEvent(index)">
+              <img src="assets/svg/delete.svg" alt="delete" />
+            </button>
+          }
+          <button class="btn-icon" (click)="store.copyEvent(formGroup)">
+            <img src="assets/svg/content_copy.svg" alt="copy" />
+          </button>
+        </span>
+      </app-customer-events-filter-step>
+
+      <span class="divider"></span>
+    }
+  </div>
+
+  <button (click)="store.addEvent()" class="btn-secondary add-event-btn">
+    {{ '+Add funnel step' | uppercase }}
+  </button>
+</form>
+<button (click)="store.applyFilters()" class="btn-primary">Apply filters</button>
