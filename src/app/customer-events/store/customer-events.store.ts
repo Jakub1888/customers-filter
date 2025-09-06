@@ -14,7 +14,7 @@ export const CustomerEventsStore = signalStore(
 
     const filterStepForm = computed(() =>
       formBuilder().group({
-        filterSteps: formBuilder().array<FormGroup>([]),
+        filterSteps: formBuilder().array<EventFormGroup>([]),
       }),
     );
 
