@@ -3,11 +3,9 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
   input,
   output,
   signal,
-  viewChild,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { getFormControl } from '../../utils';
@@ -26,7 +24,6 @@ export class FilterInputGroup<T extends { property: string; type: string }> {
   readonly index = input.required<number>();
   readonly removeEventProperty = output<void>();
 
-  protected readonly propertyInput = viewChild('propertyInput', { read: ElementRef });
   protected readonly property = computed(() => getFormControl(this.formGroup(), 'property'));
   protected readonly categories: Record<string, string[]> = {
     ['string']: ['equals', 'does not equal', 'contains', 'does not contain'],
@@ -38,18 +35,20 @@ export class FilterInputGroup<T extends { property: string; type: string }> {
     effect(() => {
       this.property()
         ?.valueChanges.pipe(startWith(this.formGroup().controls))
-        .subscribe((propertyValue: string) => {
-          const type = this.properties()?.find((value) => value.property === propertyValue)?.type;
-          if (type) {
-            this.selectedType.set(type);
-            this.formGroup().controls['type'].setValue(type);
-          }
-          this.formGroup().controls['operator'].setValue(this.categories[this.selectedType()][0]);
-        });
+        .subscribe((propertyValue: string) => this.updateFormForProperty(propertyValue));
     });
   }
 
   protected onRemoveEventProperty() {
     this.removeEventProperty.emit();
+  }
+
+  private updateFormForProperty(propertyValue: string): void {
+    const type = this.properties()?.find((value) => value.property === propertyValue)?.type;
+    if (type) {
+      this.selectedType.set(type);
+      this.formGroup().controls['type'].setValue(type);
+    }
+    this.formGroup().controls['operator'].setValue(this.categories[this.selectedType()][0]);
   }
 }

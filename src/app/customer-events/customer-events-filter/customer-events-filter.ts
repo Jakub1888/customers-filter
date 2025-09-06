@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
 
@@ -10,6 +10,7 @@ import { CustomerEventsFilterStep } from '../customer-events-filter-step/custome
   imports: [ReactiveFormsModule, UpperCasePipe, CustomerEventsFilterStep],
   templateUrl: './customer-events-filter.html',
   styleUrl: './customer-events-filter.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerEventsFilter {
   protected readonly store = inject(CustomerEventsStore);
